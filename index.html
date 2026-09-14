@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Label Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .option-label {
+            transition: all 0.3s ease;
+        }
+
+        .upload-zone.dragover {
+            background-color: #e3f2fd;
+            border-color: #2196f3;
+            transform: scale(1.02);
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <div class="header">
+            <h2><i class="fa-solid fa-crop-simple"></i> Smart Label Cropper</h2>
+            <p>Amazon, Flipkart & Meesho Tool</p>
+        </div>
+
+        <div class="platform-selector">
+            <button type="button" class="platform-btn amazon active" onclick="setPlatform('amazon', this)">
+                <i class="fa-brands fa-amazon"></i> Amazon
+            </button>
+            <button type="button" class="platform-btn flipkart" onclick="setPlatform('flipkart', this)">
+                <i class="fa-solid fa-cart-shopping"></i> Flipkart
+            </button>
+            <button type="button" class="platform-btn meesho" onclick="setPlatform('meesho', this)">
+                <i class="fa-solid fa-bag-shopping"></i> Meesho
+            </button>
+        </div>
+
+        <form action="/process" method="POST" enctype="multipart/form-data" id="uploadForm">
+            <input type="hidden" name="platform" id="platform" value="amazon">
+
+            <div class="upload-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <p>Click karein ya PDF file yahan Drag & Drop karein</p>
+                <span id="fileName" style="font-weight: bold; color: #2196f3;">Koi file select nahi ki...</span>
+                <input type="file" name="pdf_file" id="fileInput" accept=".pdf" required hidden
+                    onchange="updateFileName()">
+            </div>
+
+            <div class="options-box">
+                <!-- Naya Transparent Option -->
+                <label class="option-label" id="opt_transparent" style="display: none;">
+                    <input type="checkbox" name="sort_transparent" checked>
+                    🛍️ "Transparent Packaging" ke hisaab se Sort karein
+                </label>
+
+                <label class="option-label" id="opt_logistics" style="display: none;">
+                    <input type="checkbox" name="sort_logistics" checked>
+                    🚚 Courier Partner ke anusar Sort karein (E-Kart, Delhivery, aadi)
+                </label>
+
+                <label class="option-label" id="opt_sku">
+                    <input type="checkbox" name="sort_sku" checked>
+                    📦 Labels ko SKU (Item) ke hisaab se Sort karein
+                </label>
+
+                <label class="option-label" id="opt_invoice">
+                    <input type="checkbox" name="remove_invoice" checked>
+                    ✂️ Invoice ko Crop karein (Sirf Label rakhein)
+                </label>
+
+                <label class="option-label" id="opt_print_sku">
+                    <input type="checkbox" name="print_sku" checked>
+                    🖨️ Label ke upar SKU ka naam Print karein
+                </label>
+
+                <label class="option-label" id="opt_page_numbers">
+                    <input type="checkbox" name="print_page_numbers" checked>
+                    🔢 Har Label par Page Number (1, 2, 3...) Print karein
+                </label>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Process Labels
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const fileNameDisplay = document.getElementById('fileName');
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) {
+                fileInput.files = e.dataTransfer.files;
+                updateFileName();
+            }
+        });
+
+        function updateFileName() {
+            if (fileInput.files.length > 0) {
+                fileNameDisplay.textContent = fileInput.files[0].name;
+                fileNameDisplay.style.color = "#4CAF50";
+            } else {
+                fileNameDisplay.textContent = "Koi file select nahi ki...";
+                fileNameDisplay.style.color = "#2196f3";
+            }
+        }
+
+        function setPlatform(platformName, btnElement) {
+            document.querySelectorAll('.platform-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+            document.getElementById('platform').value = platformName;
+
+            const optLogistics = document.getElementById('opt_logistics');
+            const optTransparent = document.getElementById('opt_transparent');
+            const optInvoice = document.getElementById('opt_invoice');
+            const optPrintSku = document.getElementById('opt_print_sku');
+
+            if (platformName === 'amazon') {
+                optLogistics.style.display = 'none';
+                optTransparent.style.display = 'none';
+                optInvoice.style.display = 'block';
+                optPrintSku.style.display = 'block';
+            }
+            else if (platformName === 'flipkart') {
+                optLogistics.style.display = 'block';
+                optTransparent.style.display = 'block'; // Flipkart me dikhega
+                optInvoice.style.display = 'block';
+                optPrintSku.style.display = 'none';
+            }
+            else if (platformName === 'meesho') {
+                optLogistics.style.display = 'none';
+                optTransparent.style.display = 'none';
+                optInvoice.style.display = 'none';
+                optPrintSku.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>

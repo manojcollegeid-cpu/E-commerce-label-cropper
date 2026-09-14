@@ -1,0 +1,176 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    background: #fff;
+    width: 100%;
+    max-width: 450px;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.header h2 {
+    color: #333;
+    font-weight: 600;
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.header p {
+    color: #777;
+    font-size: 13px;
+    margin-bottom: 25px;
+}
+
+.platform-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.platform-btn {
+    flex: 1;
+    padding: 12px 5px;
+    border: 2px solid #e1e5ee;
+    border-radius: 10px;
+    background: #fff;
+    color: #666;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.platform-btn i {
+    font-size: 18px;
+}
+
+.platform-btn:hover {
+    background: #f8f9fa;
+}
+
+.platform-btn.amazon.active {
+    border-color: #ff9900;
+    background: #fff4e5;
+    color: #ff9900;
+}
+
+.platform-btn.flipkart.active {
+    border-color: #2874f0;
+    background: #e9f0fe;
+    color: #2874f0;
+}
+
+.platform-btn.meesho.active {
+    border-color: #f43397;
+    background: #fce4f0;
+    color: #f43397;
+}
+
+.upload-zone {
+    border: 2px dashed #ccc;
+    border-radius: 15px;
+    padding: 30px 20px;
+    cursor: pointer;
+    background: #fcfcfc;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.upload-zone:hover {
+    border-color: #007bff;
+    background: #f0f8ff;
+}
+
+.upload-zone i {
+    font-size: 40px;
+    color: #a0a5b1;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.upload-zone p {
+    color: #444;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.upload-zone span {
+    color: #888;
+    font-size: 12px;
+    display: block;
+}
+
+.options-box {
+    text-align: left;
+    margin-bottom: 25px;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #e1e5ee;
+}
+
+.option-label {
+    display: block;
+    font-size: 13px;
+    color: #444;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.option-label:last-child {
+    margin-bottom: 0;
+}
+
+.option-label input {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: #232f3e;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Drag and Drop visual feedback class */
+.upload-zone.dragover {
+    border-color: #28a745;
+    background-color: #e8f5e9;
+    transform: scale(1.02);
+}
